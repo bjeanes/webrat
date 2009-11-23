@@ -16,7 +16,8 @@ module Webrat
       @fields ||= Field.load_all(@session, @element)
     end
 
-    def submit
+    def submit(options = {})
+      form_action = options[:action] || self.form_action
       @session.request_page(form_action, form_method, params)
     end
 

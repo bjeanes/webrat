@@ -491,4 +491,29 @@ describe "click_button" do
     webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
     click_button "Login"
   end
+  
+  describe "HTML5 support" do
+    before do
+      with_html <<-HTML
+        <html>
+        <form method="get" action="/login">
+          <input id="user_email" name="user[email]" value="" type="text" />
+          <input type="submit" value="Login"/>
+          <input type="submit" formaction="/logout" value="Logout"/>
+        </form>
+        </html>
+      HTML
+    end
+    
+    it "should understand the formaction attribute on the input" do
+      webrat_session.should_receive(:get).with("/logout", "user" => {"email" => ""})
+      click_button "Logout"
+    end
+    
+    it "should use default action when formaction is missing from input" do
+      webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
+      click_button "Login"
+    end
+  end
+  
 end
