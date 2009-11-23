@@ -500,6 +500,7 @@ describe "click_button" do
           <input id="user_email" name="user[email]" value="" type="text" />
           <input type="submit" value="Login"/>
           <input type="submit" formaction="/logout" value="Logout"/>
+          <button formaction="/register">REGISTER!!!</button>
         </form>
         </html>
       HTML
@@ -514,6 +515,12 @@ describe "click_button" do
       webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
       click_button "Login"
     end
+    
+    it "should understand the formaction attribute on the button tag" do
+      webrat_session.should_receive(:get).with("/register", "user" => {"email" => ""})
+      click_button "REGISTER!!!"
+    end
+    
   end
   
 end
