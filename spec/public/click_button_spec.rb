@@ -500,10 +500,16 @@ describe "click_button" do
           <input id="user_email" name="user[email]" value="" type="text" />
           <input type="submit" value="Login"/>
           <input type="submit" formaction="/logout" value="Logout"/>
+          <input type="submit" formaction="" value="Me"/>
           <button formaction="/register">REGISTER!!!</button>
         </form>
         </html>
       HTML
+    end
+    
+    it "should submit to self when formaction is blank" do
+      webrat_session.should_receive(:get).with("", "user" => {"email" => ""})
+      click_button "Me"
     end
     
     it "should understand the formaction attribute on the input" do
